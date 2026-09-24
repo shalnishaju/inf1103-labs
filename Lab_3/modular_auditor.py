@@ -1,27 +1,27 @@
-inventory = 0
-failed_entries = 0
+# inventory = 0
+# failed_entries = 0
 
-while True:
-    user_input = input("Enter stock quantity (or quit): ")
+# while True:
+#     user_input = input("Enter stock quantity (or quit): ")
 
-    if user_input == "quit":
-        break
+#     if user_input == "quit":
+#         break
 
-    if not user_input.isdigit():
-        print("Invalid input. Please enter a number.")
-        failed_entries += 1
-        continue
+#     if not user_input.isdigit():
+#         print("Invalid input. Please enter a number.")
+#         failed_entries += 1
+#         continue
 
-    quantity = int(user_input)
+#     quantity = int(user_input)
 
-    inventory += quantity
+#     inventory += quantity
 
-    if inventory > 500:
-        print("OVERSTOCK ALERT!")
-        break
+#     if inventory > 500:
+#         print("OVERSTOCK ALERT!")
+#         break
 
-print("\nTotal Units Processed:", inventory)
-print("Number of Failed/Rejected Entries:", failed_entries)
+# print("\nTotal Units Processed:", inventory)
+# print("Number of Failed/Rejected Entries:", failed_entries)
 
 # new modular_auditor
 # get_valid_input()
@@ -40,18 +40,16 @@ print("Number of Failed/Rejected Entries:", failed_entries)
 #     Input: final total + failed attempts
 #     Output: prints report
 def get_valid_input():
-    while True:
-        user_input = input("Enter stock quantity (or 'quit' to finish): ")
-        if user_input.lower() == "quit":
-            return "quit"
-        try:
-            value = int(user_input)
-            if value < 0:
-                print("Error: Stock quantity cannot be negative.")
-                continue
-            return value
-        except ValueError:
-            print("Error: Please enter a valid integer.")
+    user_input = input("Enter stock quantity (or 'quit' to finish): ")
+
+    if user_input.lower() == "quit":
+        return "quit"
+
+    if not user_input.isdigit():
+        print("Invalid input. Please enter a number.")
+        return None
+
+    return int(user_input)
 
 def process_delivery(current_total, new_value):
     new_total = current_total + new_value
@@ -65,3 +63,26 @@ def generate_report(total_units, failed_attempts):
     print("\n--- Inventory Report ---")
     print("Total Deliveries Processed:", total_units)
     print("Number of Failed/Rejected Entries:", failed_attempts)
+
+def main():
+    inventory = 0
+    failed_entries = 0
+
+    while True:
+        result = get_valid_input()
+        if result == "quit":
+            break
+        if result is None:
+            failed_entries += 1
+            continue
+        quantity = result
+        inventory = process_delivery(inventory, quantity)
+        tax = calculate_tax(quantity)
+        print("Tax for this delivery:", tax)
+        if inventory > 500:
+            print("OVERSTOCK ALERT!")
+            break
+    generate_report(inventory, failed_entries)
+
+if __name__ == "__main__":
+    main()
