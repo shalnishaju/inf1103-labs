@@ -19,6 +19,7 @@ def calculate_tax(amount):
     tax = amount * 0.10
     return tax
 
+
 def generate_report(total_units, failed_attempts):
     print("\n--- Inventory Report ---")
     print("Total Deliveries Processed:", total_units)
@@ -34,6 +35,7 @@ def load_inventory():
     
 def main():
     inventory = load_inventory()
+    transaction_history = []
     failed_entries = 0
 
     while True:
@@ -44,12 +46,14 @@ def main():
             failed_entries += 1
             continue
         quantity = result
+        transaction_history.append(quantity)
         inventory = process_delivery(inventory, quantity)
         tax = calculate_tax(quantity)
         print("Tax for this delivery:", tax)
         if inventory > 500:
             print("OVERSTOCK ALERT!")
             break
+    print("Transaction History:", transaction_history)
     generate_report(inventory, failed_entries)
 
 if __name__ == "__main__":
