@@ -8,7 +8,12 @@ class Product:
 
     def get_product_id(self):
         return self.__product_id
-
+    def get_name(self):
+        return self.__name
+    def get_price(self):
+         return self.__price
+    def get_stock(self):
+        return self.__stock
     def update_stock(self, quantity):
         self.__stock = quantity
 
